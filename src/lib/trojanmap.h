@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <unordered_set>
 
 // A Node is the location of one point in the map.
 class Node {
@@ -81,6 +82,8 @@ class TrojanMap {
   std::vector<std::string> CalculateShortestPath(std::string location1_name,
                                                  std::string location2_name);
 
+
+
   // Given a vector of location ids, it should reorder them such that the path
   // that covers all these points has the minimum length.
   // The return value is a pair where the first member is the total_path,
@@ -90,6 +93,16 @@ class TrojanMap {
   std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan(
       std::vector<std::string> &location_ids);
 
+  void TSPhelper1(std::vector<std::string> &location_ids, 
+                          std::vector<std::vector<std::string>> &result,
+                          std::vector<std::string> curResults);
+
+  std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_2opt(
+      std::vector<std::string> &location_ids);
+
+  void TSPhelper2(std::vector<std::vector<std::string>> &result,
+                          std::vector<std::string> curResults,
+                          double minD);
   //-----------------------------------------------------
 
   
