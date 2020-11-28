@@ -327,7 +327,7 @@ This project is aimed to building a mapping application by using data structures
 4. Traveling salesman problem: urandomly select a number of locations and give you the shortest path to reach these locations and return to the start location
 
 ## Small modification in the PrintMenu() function
-Because I have apply three method at the TSP function, so I make a small change at the **PrintMenu()** function to let people be able to select a method to do the TSP function. After enter the number of points, the programming will print following menu:
+Because I have apply three methods at the TSP function, so I make a small change at the **PrintMenu()** function to let people be able to select a method to do the TSP function. After inputing the number of points, the programming will print following menu:
 
 ```shell
 **************************************************************
@@ -337,7 +337,7 @@ Because I have apply three method at the TSP function, so I make a small change 
 **************************************************************
 ```
 
-You can input the number of method to let the system choose the selected method to solve TSP. If your input is an invalid input(e.g. 4, "I want to use 3-opt method"...). The system will remind you that it is an invalid input and use the default method(Brute Force) to solve TSP.
+You can input the number of method to let the system choose the selected method to solve TSP. If your input is an invalid input(e.g. 4, "I want to use 3-opt method", ...). The system will remind you that it is an invalid input and use the default method(Brute Force) to solve TSP.
 
 
 ## Functions in this project:
@@ -354,10 +354,10 @@ std::string GetName(std::string id);
 std::vector<std::string> GetNeighborIDs(std::string id);
 ```
 
-For these function, I use a private variable, data, in this project. It is a map variable whose key is the id of locations and value is the node to the id. Thus, I can use this private variable to find the node by the inputted id and return the related parameter of this node.
+For these function, I use the private variable, data, in this project. It is a map variable whose key is the id of locations and value is the node to the id. Thus, I can use this private variable to find the node by the inputted id and return the related parameter of this node.
 
 ### 2. Helper functions to calculate the distance between locations and the length of a path
-Because of the last two main functions for the menu item, it is necessary to have two functions which can calculate the distance for different situation as following:
+Because of the last two main functions for the menu item, it is necessary to have two functions which can calculate the distance for different situations as following:
 
 ```c++
 double CalculateDistance(const Node &a, const Node &b);
@@ -427,7 +427,7 @@ In following case, although Target is included in the map, the input should be c
 
 ### 5. Calculate Shorteat Path
 
-Here is the head file of the function:
+Here is the header file of the function:
 
 ```c++
 std::vector<std::string> CalculateShortestPath(std::string location1_name,
@@ -438,13 +438,13 @@ It will calculate and return the shortest path between location 1 and location 2
 
 <p align="center"><img src="Myimg/3-1.png" alt="CalculateShortestPathCodeDiagram" width="500"/></p>
 
-According to this diagram, the time complexity of this function is O(n * V), which V is a specific number related to the neighbor number of each location.
+According to this diagram, the time complexity of this function is O(n * m), which m is a specific number related to the neighbor number of each location.
 
 Here is a single process of the process of update the d map. if we start from node 0, and we found that the current distance[n+1] is greater than the sum of distance[n] and the distance between node n and node n+1, we will use the sum of distance[n] and the distance between node n and node n+1 to update the value of distance[n+1].
 
 <p align="center"><img src="Myimg/3-8.png" alt="SingleUpdateD" width="500"/></p>
 
-Here is some results of this function. Because it is also a case sensitive function, you will get following result if you still using "target" as one of the inputs:
+Here is some results of this function. Because it is also a case-sensitive function, you will get following result if you still using "target" as one of the inputs:
 
 <p align="center"><img src="Myimg/3-5.png" alt="CalculateShortestPathResult1" width="500"/></p>
 
@@ -490,7 +490,7 @@ This function will randomly select locations based on your input and find the sb
 
 According to this diagram, we can see that the main idea of this function is to generate new route and find if it has a shorter length. I also use three different algorithms in this part.
 
-The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimation in my code, I use a If statement to let it abandon those routes which has longer distance than the inputted route.
+The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. I created a recursive helper function to generate all possible routes as the Brute Force Method. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimation in my code, I use a If statement to let it abandon those routes which has longer distance than the inputted route.
 
 Here is one result of the TSP function based on Brute Force Method:
 
@@ -502,7 +502,7 @@ The amimated plot:
 
 <p align="center"><img src="Myimg/4-11.gif" alt="TravellingTrojanR1gif" width="500"/></p>
 
-The final TSP solusion:
+The final TSP route:
 
 <p align="center"><img src="Myimg/4-12.jpg" alt="TravellingTrojanR1" width="500"/></p>
 
@@ -527,7 +527,7 @@ The amimated plot:
 
 <p align="center"><img src="Myimg/4-13.gif" alt="TravellingTrojanR2gif" width="500"/></p>
 
-The final TSP solusion:
+The final TSP route:
 
 <p align="center"><img src="Myimg/4-14.jpg" alt="TravellingTrojanR2result" width="500"/></p>
 
@@ -536,7 +536,7 @@ The final TSP solusion:
 
 <p align="center"><img src="Myimg/4-7.png" alt="TravellingTrojan3-opt1" width="500"/></p>
 
-We use the same original route as the 2-opt case, and we delete the three edges, 1->2, 3->4, and 5->0. We will get three different subroutes, 0->1, 2->3 and 4->5. To make it more clear, we name them as A, B and C.
+We use the same original route as the 2-opt case, and we delete the three edges, 1->2, 3->4, and 5->0. We will get three different subroutes, 0->1, 2->3 and 4->5. To make it more clear, we suppose that they are A, B and C.
 
 Here is the first style to reconnect:
 
@@ -556,7 +556,7 @@ The fourth style is following, and it is [A->,C->,B<-];
 
 <p align="center"><img src="Myimg/4-17.png" alt="TravellingTrojan3-opt4" width="500"/></p>
 
-In addition, the other three style is [A->,B<-,C->],[A->,B->,C<-] and [A->,C<-,B<-]. They are also the style of 2-opt, so it is easy to modify 2-opt method code to 3-opt method by adding the first three 3-opt swap method in the 2-opt method code. The final time complexity of a single 3-opt method is O(n^3).
+In addition, the other three style is [A->,B<-,C->],[A->,B->,C<-] and [A->,C<-,B<-]. They are also the style of 2-opt, so it is easy to modify 2-opt method code to 3-opt method by adding the first four 3-opt swap methods in the 2-opt method code. The final time complexity of a single 3-opt method is O(n^3).
 
 Here is the result of the TSP function based on 3-opt Method:
 
@@ -566,7 +566,7 @@ The amimated plot:
 
 <p align="center"><img src="Myimg/4-15.gif" alt="TravellingTrojanR3gif" width="500"/></p>
 
-The final TSP solusion:
+The final TSP route:
 
 <p align="center"><img src="Myimg/4-16.jpg" alt="TravellingTrojanR3" width="500"/></p>
 
