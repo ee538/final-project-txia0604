@@ -529,7 +529,7 @@ The amimated plot:
 
 The final TSP solusion:
 
-<p align="center"><img src="Myimg/4-14.png" alt="TravellingTrojanR2" width="500"/></p>
+<p align="center"><img src="Myimg/4-14.png" alt="TravellingTrojanR2result" width="500"/></p>
 
 
 3-opt method is similiar with 2-opt method, it deletes three edges from original route and reconnect them in 7 different styles. Here is an example of a single process of 3-opt method. 
