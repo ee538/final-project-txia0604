@@ -75,7 +75,7 @@ make install
 For example, if cloned this repo under "/Users/ari/github/TrojanMap", you should type:
 
 ```shell
-cmake -D CMAKE_INSTALL_PREFIX=/Users/ari/github/TrojanMap/opencv/install  -D BUILD_LIST=core,highgui,imgcodecs,imgproc,videoio  -D WITH_TBB=ON -D WITH_OPENMP=ON -D WITH_IPP=ON -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_EXAMPLES=OFF -D WITH_NVCUVID=ON -D WITH_CUDA=ON -D BUILD_DOCS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CSTRIPES=ON -D WITH_OPENCL=ON ..
+cmake -D CMAKE_INSTALL_PREFIX=/Users/ari/github/TrojanMap/opencv/install  -D BUILD_LIST=core,highgui, imgcodecs,imgproc,videoio  -D WITH_TBB=ON -D WITH_OPENMP=ON -D WITH_IPP=ON -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_EXAMPLES=OFF -D WITH_NVCUVID=ON -D WITH_CUDA=ON -D BUILD_DOCS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CSTRIPES=ON -D WITH_OPENCL=ON ..
 make install
 ```
 
@@ -105,6 +105,7 @@ If everything is correct, this menu will show up.
 ## Test the program
 
 We create some tests for you to test your program, please run
+
 ```shell
 bazel test tests:tests:trojanmap_test
 ```
@@ -310,3 +311,246 @@ Your README file should include two sections:
    1. A second shortest path algorithms (For example, you can implement both Bellman-Ford and Dijkstra): 10 points.
    2. [3-opt](http://cs.indstate.edu/~zeeshan/aman.pdf) (If you chose to implement 2-opt for Travelling Trojan): 20 points.
    3. [Genetic algorithm](https://www.geeksforgeeks.org/traveling-salesman-problem-using-genetic-algorithm/) implementation for Travelling Trojan: 20 points.
+
+## Final report:
+
+## Small modification in the PrintMenu() function
+Because I have apply three method at the TSP function, so I make a small change at the **PrintMenu()** function to let people be able to select a method to do the TSP function. After enter the number of points, the programming will print following menu:
+
+```shell
+**************************************************************
+* 1. Brute Force                                              
+* 2. 2-opt                                                    
+* 3. 3-opt                                                    
+**************************************************************
+```
+
+You can input the number of method to let the system choose the selected method to solve TSP. If your input is an invalid input(e.g. 4, "I want to use 3-opt method"...). The system will remind you that it is an invalid input and use the default method(Brute Force) to solve TSP.
+
+
+## Functions in this project:
+
+### 1. Simple functions which return related parameter
+In this project, it also has some simple functions which return related parameters based on the input location ID as following:
+```c++
+double GetLat(std::string id);
+
+double GetLon(std::string id);
+
+std::string GetName(std::string id);
+
+std::vector<std::string> GetNeighborIDs(std::string id);
+```
+
+For these function, I use a private variable, data, in this project. It is a map variable whose key is the id of locations and value is the node to the id. Thus, I can use this private variable to find the node by the inputted id and return the related parameter of this node.
+
+### 2. Helper functions to calculate the distance between locations and the length of a path
+Because of the last two main functions for the menu item, it is necessary to have two functions which can calculate the distance for different situation as following:
+
+```c++
+double CalculateDistance(const Node &a, const Node &b);
+
+double CalculatePathLength(const std::vector<std::string> &path);
+```
+
+The first function is to calculate the distance between two locations, and the other one is to calculate the length of a vector of locations. Let's explain the first function at first.
+
+In the function **CalculateDistance()**, I use the Haversine Formula to calculate the distance between two locations based on their latitudes and longitudes.
+
+In the function **CalculatePathLength()**, I calculate the distances between two adjacent locations in the vector and accumulate them as the sum length of this path.
+
+### 3. First function for the menu: Autocomplete
+
+The first main function for the menu in this project is to search a place by a unsensitive partial name as prefix. Here is the header of this function: 
+
+```c++
+std::vector<std::string> Autocomplete(std::string name);
+```
+
+In this function, I use the function **equal()** from STL to find name in the map which match the requirement in a loop. If it doen't exist the required name, it will return an empty result. Here is the code diagram of this function:
+
+<p align="center"><img src="Myimg/1-1.png" alt="AutocompleteCodeDiagram" width="500"/></p>
+
+The time complexity of this function is O(n).
+
+Here are some results of the live demo:
+
+<p align="center"><img src="Myimg/1-2.png" alt="AutocompleteResult1" width="500"/></p>
+
+<p align="center"><img src="Myimg/1-3.png" alt="AutocompleteResult2" width="500"/></p>
+
+<p align="center"><img src="Myimg/1-4.png" alt="AutocompleteResult3" width="500"/></p>
+
+When the project can't find any location which requires your input, its result will be:
+
+<p align="center"><img src="Myimg/1-5.png" alt="AutocompleteResult4" width="500"/></p>
+
+### Find the position of a location
+
+This function can return the position of a given location name or (-1,-1) if there isn't a location has the given name. Here is the header of this function:
+
+```c++
+std::pair<double, double> GetPosition(std::string name);
+```
+
+This function can easily achieve it by using a loop for data variable to find a location which meet the requirement. The time complexity of this function is O(n).
+
+Here is the code diagram of this function:
+
+<p align="center"><img src="Myimg/2-1.png" alt="GetPositionCodeDiagram" width="500"/></p>
+
+The time complexity of this function is O(n).
+
+Here are some results of the live demo:
+
+<p align="center"><img src="Myimg/2-2.png" alt="GetPositionResult1" width="500"/></p>
+
+In the main programming, it will also plot the location on the map like following picture:
+
+<p align="center"><img src="Myimg/2-4.png" alt="GetPositionResult1Plot" width="500"/></p>
+
+In following case, although Target is included in the map, the input should be case-sensitive. Therefore, when we input "target", it won't return the position of Target.
+
+<p align="center"><img src="Myimg/2-3.png" alt="GetPositionResult2" width="500"/></p>
+
+### Calculate Shorteat Path
+
+Here is the head file of the function:
+
+```c++
+std::vector<std::string> CalculateShortestPath(std::string location1_name,
+                                               std::string location2_name);
+```
+
+It will calculate and return the shortest path between location 1 and location 2. In this function, I use the Bellman-Ford algorithm, and here is the code diagram:
+
+<p align="center"><img src="Myimg/3-1.png" alt="CalculateShortestPathCodeDiagram" width="500"/></p>
+
+According to this diagram, the time complexity of this function is O(n^2 * V), which V is a specific number related to the neighbor number of each location.
+
+Here is a single process of the process of update the d map. if we start from node 0, and we found that the current distance[n+1] is greater than the sum of distance[n] and the distance between node n and node n+1, we will use the sum of distance[n] and the distance between node n and node n+1 to update the value of distance[n+1].
+
+<p align="center"><img src="Myimg/3-8.png" alt="SingleUpdateD" width="500"/></p>
+
+Here is some results of this function. Because it is also a case sensitive function, you will get following result if you still using "target" as one of the inputs:
+
+<p align="center"><img src="Myimg/3-5.png" alt="CalculateShortestPathResult1" width="500"/></p>
+
+Because the list of path may be a bit harder to see in the programming, I use the plot of the path as the result. Here is the plot of the shortest path between Target and CVS:
+
+<p align="center"><img src="Myimg/3-2.png" alt="CalculateShortestPathResult2" width="500"/></p>
+
+and we compare it with the recommand route on the Google map:
+
+<p align="center"><img src="Myimg/3-4.png" alt="CalculateShortestPathResult2Google" width="500"/></p>
+
+We can see that they have similiar result.
+
+Here is the plot of the shortest path between Ralphs and CVS:
+
+<p align="center"><img src="Myimg/3-6.png" alt="CalculateShortestPathResult3" width="500"/></p>
+
+and we compare it with the recommand routes on the Google map:
+
+<p align="center"><img src="Myimg/3-7.png" alt="CalculateShortestPathResult3Google" width="500"/></p>
+
+In this case, our result is a bit different from the Google map. I think that one of the reason is that the Google map may not only consider the distance between two location, it will also consider some more elements such as if there exists some roads which is blocked.
+
+### Traveling Trojan based on TSP
+
+Here is the header of this funciton:
+
+```c++
+std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan(
+      std::vector<std::string> &location_ids);
+
+std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_2opt(
+      std::vector<std::string> &location_ids);
+
+std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_3opt(
+      std::vector<std::string> &location_ids);
+```
+
+This function will randomly select locations based on your input and find the sbortest route which can let you reach these locations and return to the start location. Here is the code diagram of this function:
+
+<p align="center"><img src="Myimg/4-1.png" alt="TravellingTrojanCodeDiagram" width="500"/></p>
+
+
+According to this diagram, we can see that the main idea of this function is to generate new route and find if it has a shorter length. I also use three different algorithms in this part.
+
+The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimation in my code, I use a If statement to let it abandon those routes which has longer distance than the inputted route.
+
+Here is one result of the TSP function based on Brute Force Method:
+
+The list of selected points:
+
+<p align="center"><img src="Myimg/4-2.png" alt="TravellingTrojanR1list" width="500"/></p>
+
+The amimated plot:
+
+<p align="center"><img src="Myimg/4-11.gif" alt="TravellingTrojanR1gif" width="500"/></p>
+
+The final TSP solusion:
+
+<p align="center"><img src="Myimg/4-12.jpg" alt="TravellingTrojanR1" width="500"/></p>
+
+
+I also apply the 2-opt method to solve the TSP. The main idea of 2-opt is to delete two edges from original route and reconnect them to generate a new route. Here is an example of a single process of 2-opt method. 
+
+<p align="center"><img src="Myimg/4-5.png" alt="TravellingTrojan2-opt1" width="500"/></p>
+
+The left part is the original route. We delete two edges, 1->2 and 4->5, and reconnect them to get the new route at the right part. Thus, the transformation from left route to right route is following:
+
+<p align="center"><img src="Myimg/4-6.png" alt="TravellingTrojan2-opt2" width="500"/></p>
+
+It is clear that the a single process of 2-opt swap can be think as reversing a part in the middle of the original route, so we can use 2-opt swap iteratively to the original route and recursively do the same process to the new routes to generate any possible solution to TSP. The final time complexity of 2-opt method is O(n^2)
+
+Here is one result of the TSP function based on 2-opt Method:
+
+The list of selected points:
+
+<p align="center"><img src="Myimg/4-3.png" alt="TravellingTrojanR2list" width="500"/></p>
+
+The amimated plot:
+
+<p align="center"><img src="Myimg/4-13.gif" alt="TravellingTrojanR2gif" width="500"/></p>
+
+The final TSP solusion:
+
+<p align="center"><img src="Myimg/4-14.png" alt="TravellingTrojanR2" width="500"/></p>
+
+
+3-opt method is similiar with 2-opt method, it deletes three edges from original route and reconnect them in 7 different styles. Here is an example of a single process of 3-opt method. 
+
+<p align="center"><img src="Myimg/4-7.png" alt="TravellingTrojan3-opt1" width="500"/></p>
+
+We use the same original route as the 2-opt case, and we delete the three edges, 1->2, 3->4, and 5->0. We will get three different subroutes, 0->1, 2->3 and 4->5. To make it more clear, we name them as A, B and C.
+
+Here is the first style to reconnect:
+
+<p align="center"><img src="Myimg/4-8.png" alt="TravellingTrojan3-opt2" width="500"/></p>
+
+We reconnect the end of A to the end of B, the begin of B to the end of C, and the begin of C to begin of A. To simplify it, we can call the new route as [A->,B<-,C<-].
+
+The second style is following, and we call it as [A->,C->,B->]:
+
+<p align="center"><img src="Myimg/4-9.png" alt="TravellingTrojan3-opt3" width="500"/></p>
+
+The third style is following, it is [A->,C<-,B->]:
+
+<p align="center"><img src="Myimg/4-10.png" alt="TravellingTrojan3-opt4" width="500"/></p>
+
+In addition, the other three style is [A->,B<-,C->],[A->,B->,C<-] and [A->,C<-,B<-]. They are also the style of 2-opt, so it is easy to modify 2-opt method code to 3-opt method by adding the first three 3-opt swap method in the 2-opt method code.
+
+Here is the result of the TSP function based on 3-opt Method:
+
+<p align="center"><img src="Myimg/4-4.png" alt="TravellingTrojanR3list" width="500"/></p>
+
+The amimated plot:
+
+<p align="center"><img src="Myimg/4-15.gif" alt="TravellingTrojanR3gif" width="500"/></p>
+
+The final TSP solusion:
+
+<p align="center"><img src="Myimg/4-16.jpg" alt="TravellingTrojanR3" width="500"/></p>
+

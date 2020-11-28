@@ -150,8 +150,55 @@ void TrojanMap::PrintMenu() {
     for (int i = 0; i < num; i++)
       locations.push_back(keys[rand() % keys.size()]);
     PlotPoints(locations);
-    std::cout << "Calculating ..." << std::endl;
-    auto results = TravellingTrojan_2opt(locations);
+    ///////////////////The begining of my modification/////////////////
+    menu = 
+        "**************************************************************\n"
+        "* 1. Brute Force                                              \n"
+        "* 2. 2-opt                                                    \n"
+        "* 3. 3-opt                                                    \n"
+        "**************************************************************\n";
+    std::cout << menu << std::endl << std::endl;
+    menu = "Please select your algorithm:";
+    std::cout << menu;
+    std::string inputm;
+    getline(std::cin, inputm);
+    int method = std::stoi(inputm);
+    //std::cout << "your input:" << method << std::endl;
+    std::pair<double, std::vector<std::vector<std::string>>> results;
+    switch (method)
+      {
+        case 1:
+          { 
+            std::cout << "You choose Brute Force." << std::endl;
+            std::cout << "Calculating ..." << std::endl;
+            results = TravellingTrojan(locations);
+            break;
+          }
+        case 2:
+          {
+            std::cout << "You choose 2-opt." << std::endl;
+            std::cout << "Calculating ..." << std::endl;
+            results = TravellingTrojan_2opt(locations);
+            break;
+          }
+        case 3:
+          {
+            std::cout << "You choose 3-opt." << std::endl;
+            std::cout << "Calculating ..." << std::endl;
+            results = TravellingTrojan_3opt(locations);
+            break;
+          }
+        default:
+          {
+            std::cout << "Invalid input, using default method: Brute Force" << std::endl;
+            std::cout << "Calculating ..." << std::endl;
+            results = TravellingTrojan(locations);
+            break;
+          }
+      }
+      //////////////The end of my modification////////////
+    //std::cout << "Calculating ..." << std::endl;
+    //auto results = TravellingTrojan_2opt(locations);
     menu = "*************************Results******************************\n";
     std::cout << menu;
     CreateAnimation(results.second);
@@ -605,17 +652,117 @@ void TrojanMap::TSPhelper2(std::vector<std::vector<std::string>> &result,
   }
   else{
     std::vector<std::string> nextResult;
-    for(int i=1;i<curResult.size();i++){
+    for(int i=1;i<curResult.size()-1;i++){
       for(int j=i+1;j<curResult.size();j++){
         nextResult = curResult;
         std::reverse(nextResult.begin()+i,nextResult.begin()+j+1);
         // only add the route which has smaller distence and update the minimum distance
-        if(find(result.begin(),result.end(),nextResult) == result.end() && CalculatePathLength(curResult)>CalculatePathLength(nextResult)){
+        if(find(result.begin(),result.end(),nextResult) == result.end()
+           && CalculatePathLength(curResult)>CalculatePathLength(nextResult)){
           result.push_back(nextResult);
           TSPhelper2(result,nextResult,CalculatePathLength(curResult));
         }
       }
     }
   }
-  
+}
+
+
+std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_3opt(
+                                    std::vector<std::string> &location_ids) {
+  std::pair<double, std::vector<std::vector<std::string>>> results;
+  std::vector<std::string> curResult = location_ids;
+  //curResult.push_back(location_ids[0]);
+  results.second.push_back(curResult);
+  double minD = double(INT32_MAX);
+  int minIndex = 0;
+  TSPhelper3(results.second,location_ids,minD);
+  for(int i=0;i<results.second.size();i++){
+    results.second[i].push_back(location_ids[0]);
+    if(minD>CalculatePathLength(results.second[i])){
+      minD = CalculatePathLength(results.second[i]);
+      minIndex = i;
+    }
+  }
+  results.first = minD;
+  results.second[results.second.size()-1].swap(results.second[minIndex]);
+
+
+  return results;                            
+}
+
+void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
+                          std::vector<std::string> curResult,
+                          double minD){
+  // filter the route which has larger distence than current minimum route
+  if(minD<=CalculatePathLength(curResult)){
+    return;
+  }
+  else{
+    std::vector<std::string> nextResult1;
+    std::vector<std::string> nextResult2;
+    std::vector<std::string> nextResult3;
+    std::vector<std::string> nextResult4;
+    std::vector<std::vector<std::string>> nextResults;
+    std::vector<std::string> bestNextResult;
+    for(int i=1;i<curResult.size()-1;i++){
+      for(int j=i+1;j<curResult.size();j++){
+        std::vector<std::string> a;
+        std::vector<std::string> b;
+        std::vector<std::string> c;
+        for(int it=0;it<i;it++){a.push_back(curResult[it]);}
+        for(int it=i;it<j;it++){b.push_back(curResult[it]);}
+        for(int it=j;it<curResult.size();it++){c.push_back(curResult[it]);}
+        std::vector<std::string> br = b;
+        std::reverse(br.begin(),br.end());
+        std::vector<std::string> cr = c;
+        std::reverse(cr.begin(),cr.end());
+        // a-> b<- c<-
+        for(int it=0;it<a.size();it++){nextResult1.push_back(a[it]);}
+        for(int it=0;it<br.size();it++){nextResult1.push_back(br[it]);}
+        for(int it=0;it<cr.size();it++){nextResult1.push_back(cr[it]);}
+        
+        if(find(result.begin(),result.end(),nextResult1) == result.end()
+           && CalculatePathLength(curResult)>CalculatePathLength(nextResult1)){
+          result.push_back(nextResult1);
+          TSPhelper3(result,nextResult1,CalculatePathLength(curResult));
+        }
+
+        // a-> c-> b->
+        for(int it=0;it<a.size();it++){nextResult2.push_back(a[it]);}
+        for(int it=0;it<c.size();it++){nextResult2.push_back(c[it]);}
+        for(int it=0;it<b.size();it++){nextResult2.push_back(b[it]);}
+        
+        if(find(result.begin(),result.end(),nextResult2) == result.end()
+          && CalculatePathLength(curResult)>CalculatePathLength(nextResult2)){
+          result.push_back(nextResult2);
+          TSPhelper3(result,nextResult2,CalculatePathLength(curResult));
+        }
+        
+
+        // a-> c<- b->
+        for(int it=0;it<a.size();it++){ nextResult3.push_back(a[it]); }
+        for(int it=0;it<cr.size();it++){ nextResult3.push_back(cr[it]); }
+        for(int it=0;it<b.size();it++){ nextResult3.push_back(b[it]); }
+
+
+        
+        if(find(result.begin(),result.end(),nextResult3) == result.end()
+           && CalculatePathLength(curResult)>CalculatePathLength(nextResult3)){
+          result.push_back(nextResult3);
+          TSPhelper3(result,nextResult3,CalculatePathLength(curResult));
+        }
+
+        // other opt swap
+        nextResult4 = curResult;
+        std::reverse(nextResult4.begin()+i,nextResult4.begin()+j+1);
+        
+        if(find(result.begin(),result.end(),nextResult4) == result.end()
+           && CalculatePathLength(curResult)>CalculatePathLength(nextResult4)){
+          result.push_back(nextResult4);
+          TSPhelper3(result,nextResult4,CalculatePathLength(curResult));
+        }
+      }
+    }
+  }
 }

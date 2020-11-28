@@ -103,6 +103,13 @@ class TrojanMap {
   void TSPhelper2(std::vector<std::vector<std::string>> &result,
                           std::vector<std::string> curResults,
                           double minD);
+
+  std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_3opt(
+      std::vector<std::string> &location_ids);
+
+  void TSPhelper3(std::vector<std::vector<std::string>> &result,
+                          std::vector<std::string> curResults,
+                          double minD);                        
   //-----------------------------------------------------
 
   
