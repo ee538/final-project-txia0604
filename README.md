@@ -314,6 +314,18 @@ Your README file should include two sections:
 
 ## Final report:
 
+## Bastic Functions of The TrojanMap
+
+This project is aimed to building a mapping application by using data structures and graph search algorithms. This project has four main functions related to this field:
+
+1. Autocomplete: using insensitive partial name to search a list of location
+
+2. Find the position: using sensitive name to search the position of the location
+
+3. CalculateShortestPath: giving the shortest path and its length between two location
+
+4. Traveling salesman problem: urandomly select a number of locations and give you the shortest path to reach these locations and return to the start location
+
 ## Small modification in the PrintMenu() function
 Because I have apply three method at the TSP function, so I make a small change at the **PrintMenu()** function to let people be able to select a method to do the TSP function. After enter the number of points, the programming will print following menu:
 
@@ -385,7 +397,7 @@ When the project can't find any location which requires your input, its result w
 
 <p align="center"><img src="Myimg/1-5.png" alt="AutocompleteResult4" width="500"/></p>
 
-### Find the position of a location
+### 4. Find the position of a location
 
 This function can return the position of a given location name or (-1,-1) if there isn't a location has the given name. Here is the header of this function:
 
@@ -413,7 +425,7 @@ In following case, although Target is included in the map, the input should be c
 
 <p align="center"><img src="Myimg/2-3.png" alt="GetPositionResult2" width="500"/></p>
 
-### Calculate Shorteat Path
+### 5. Calculate Shorteat Path
 
 Here is the head file of the function:
 
@@ -426,7 +438,7 @@ It will calculate and return the shortest path between location 1 and location 2
 
 <p align="center"><img src="Myimg/3-1.png" alt="CalculateShortestPathCodeDiagram" width="500"/></p>
 
-According to this diagram, the time complexity of this function is O(n^2 * V), which V is a specific number related to the neighbor number of each location.
+According to this diagram, the time complexity of this function is O(n * V), which V is a specific number related to the neighbor number of each location.
 
 Here is a single process of the process of update the d map. if we start from node 0, and we found that the current distance[n+1] is greater than the sum of distance[n] and the distance between node n and node n+1, we will use the sum of distance[n] and the distance between node n and node n+1 to update the value of distance[n+1].
 
@@ -456,7 +468,7 @@ and we compare it with the recommand routes on the Google map:
 
 In this case, our result is a bit different from the Google map. I think that one of the reason is that the Google map may not only consider the distance between two location, it will also consider some more elements such as if there exists some roads which is blocked.
 
-### Traveling Trojan based on TSP
+### 6. Traveling Trojan based on TSP
 
 Here is the header of this funciton:
 
@@ -503,7 +515,7 @@ The left part is the original route. We delete two edges, 1->2 and 4->5, and rec
 
 <p align="center"><img src="Myimg/4-6.png" alt="TravellingTrojan2-opt2" width="500"/></p>
 
-It is clear that the a single process of 2-opt swap can be think as reversing a part in the middle of the original route, so we can use 2-opt swap iteratively to the original route and recursively do the same process to the new routes to generate any possible solution to TSP. The final time complexity of 2-opt method is O(n^2)
+It is clear that the a single process of 2-opt swap can be think as reversing a part in the middle of the original route, so we can use 2-opt swap iteratively to the original route and recursively do the same process to the new routes to generate any possible solution to TSP. The final time complexity of 2-opt method is O(n^2).
 
 Here is one result of the TSP function based on 2-opt Method:
 
@@ -540,7 +552,11 @@ The third style is following, it is [A->,C<-,B->]:
 
 <p align="center"><img src="Myimg/4-10.png" alt="TravellingTrojan3-opt4" width="500"/></p>
 
-In addition, the other three style is [A->,B<-,C->],[A->,B->,C<-] and [A->,C<-,B<-]. They are also the style of 2-opt, so it is easy to modify 2-opt method code to 3-opt method by adding the first three 3-opt swap method in the 2-opt method code.
+The fourth style is following, and it is [A->,C->,B<-];
+
+<p align="center"><img src="Myimg/4-17.png" alt="TravellingTrojan3-opt4" width="500"/></p>
+
+In addition, the other three style is [A->,B<-,C->],[A->,B->,C<-] and [A->,C<-,B<-]. They are also the style of 2-opt, so it is easy to modify 2-opt method code to 3-opt method by adding the first three 3-opt swap method in the 2-opt method code. The final time complexity of a single 3-opt method is O(n^3).
 
 Here is the result of the TSP function based on 3-opt Method:
 
@@ -554,3 +570,29 @@ The final TSP solusion:
 
 <p align="center"><img src="Myimg/4-16.jpg" alt="TravellingTrojanR3" width="500"/></p>
 
+## Time Complexity and behavior in the test case
+
+I also constructed a test file to test the behavior of the four main functions for menu items. For the accuracy, my functions has passed all given unit test, so I will focus on the relationship between their theoretic time complexity and real run time. Here is their run time in one test case:
+
+**Autocomplete():** 75ms
+
+**FindPosition():** 75ms
+
+**CalculateShortestPath():** 185539ms(case 1), 197268ms(case 2)
+
+**TravellingTrojan() :** 77ms(case 1), 80ms(case 2), 15063ms(case 3)
+
+**TravellingTrojan_2opt() :** 67ms(case 1), 70ms(case 2), 903ms(case 3)
+
+**TravellingTrojan_3opt() :** 71ms(case 1), 109ms(case 2), 26901ms(case 3)
+
+For the first two functions, it has short runtime because both of them have a low time complexity(O(n)). The other two functions have some insteresting problem which I would like to spend time to analyze.
+
+The first problem is the extraordinary long run time in the function **CalculateShortestPath():**, both these two test case has nearly 200s run time. I has two hypotheses in this part. The first hypothesis is the limitation of my hardware. I run and test this project on the Ubuntu system which is in a virtual machine. When I set this system, I haven't given this virtual machine a high parameter because I don't want to make it affect other software's behavior on my computer. Thus I has this hypothesis that the limitation of my coding environment may cause the long run time.
+
+My second hypothesis is the time complexity of the Bellman-Ford algorithm. In my function, I use three loop to iteratively update the d map and path map. In principle, the first loop will run n times, and the other two loop are only checking incomg edges, which makes the time complexity is O(n * (Sum(all incoming edges))) = O(n * m). However, I think that my function may have some unnecessary part that makes the 2nd or 3nd loop run the whole n times. It makes the real time complexity become O(n^2 * m) or even O(n^3) and extraordinary increasing the run time of this function.
+
+The other problem I am focus on is the long run time of **TravellingTrojan_3opt() :** function in a big number of input points. Although I know the runtime of 3-opt method is O(n^3), which will be a bit longer than 2-opt method, it is abnormal that real run time of 3-opt method is longer than Brute Force method whose time complexity is O(n!). My hypothesis in this problem is that I may create too much branch in the 3-opt method. I use a recursive helper function to generate new routes and find the solution. Because 3-opt method has 7 different reconnecting methods, I creat branch for different methods. Although I have combine 3 of them which can be think as 2-opt swap, there are still 5 branch in a single recursive function. I think that it will severely increasing the runtime of the function.
+
+Above all, I think that I have learnt a lot from this project such as how to using c++ to program in
+a practical field, how to use different algorithms to solve problems. In addition, I also have some future plan related to programming field. For example, one of my main problems in this project is the extraordinary long run time in some function. It is necessary for me to know the complexity in a higher level and know how to optimize the time complexity of a programme.
