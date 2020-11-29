@@ -466,7 +466,7 @@ and we compare it with the recommand routes on the Google map:
 
 <p align="center"><img src="Myimg/3-7.png" alt="CalculateShortestPathResult3Google" width="500"/></p>
 
-In this case, our result is a bit different from the Google map. I think that one of the reason is that the Google map may not only consider the distance between two location, it will also consider some more elements such as if there exists some roads which is blocked.
+In this case, our result is a bit different from the Google map. I think that one of the reason is that not only the Google map may consider the distance between two location, but also it will consider more elements such as if there exists some roads which is blocked.
 
 ### 6. Traveling Trojan based on TSP
 
@@ -490,7 +490,7 @@ This function will randomly select locations based on your input and find the sb
 
 According to this diagram, we can see that the main idea of this function is to generate new route and find if it has a shorter length. I also use three different algorithms in this part.
 
-The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. I created a recursive helper function to generate all possible routes as the Brute Force Method. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimation in my code, I use a If statement to let it abandon those routes which has longer distance than the inputted route.
+The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. I created a recursive helper function to generate all possible routes as the Brute Force Method. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimation in my code, I use a If statement to let it abandon those routes which has longer distance than the inputted route. It gives the function a significant optimization to this function. In the test case 3 of the TSP function, the average runtime of a non-optimized Brute Force Method is nearly 25000ms, and the average runtime of an optimized Brute Method is nearly 15000ms. It efficiently improves the time complexity of the original function by making it much lower than O(n!).
 
 Here is one result of the TSP function based on Brute Force Method:
 
@@ -596,3 +596,9 @@ The other problem I am focus on is the long run time of **TravellingTrojan_3opt(
 
 Above all, I think that I have learnt a lot from this project such as how to using c++ to program in
 a practical field, how to use different algorithms to solve problems. In addition, I also have some future plan related to programming field. For example, one of my main problems in this project is the extraordinary long run time in some function. It is necessary for me to know the complexity in a higher level and know how to optimize the time complexity of a programme.
+
+## Modified final video
+
+Here is the link of the final video of the presentation for this project:
+
+[https://youtu.be/yUWVqpwIT1U](https://youtu.be/yUWVqpwIT1U)

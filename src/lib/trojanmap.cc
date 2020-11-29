@@ -672,7 +672,7 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
                                     std::vector<std::string> &location_ids) {
   std::pair<double, std::vector<std::vector<std::string>>> results;
   std::vector<std::string> curResult = location_ids;
-  //curResult.push_back(location_ids[0]);
+  
   results.second.push_back(curResult);
   double minD = double(INT32_MAX);
   int minIndex = 0;
@@ -704,6 +704,8 @@ void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
     std::vector<std::string> nextResult3;
     std::vector<std::string> nextResult4;
     std::vector<std::string> nextResult5;
+    std::vector<std::string> nextResult6;
+    std::vector<std::string> nextResult7;
     std::vector<std::vector<std::string>> nextResults;
     std::vector<std::string> bestNextResult;
     for(int i=1;i<curResult.size()-1;i++){
@@ -722,6 +724,7 @@ void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
         for(int it=0;it<a.size();it++){nextResult1.push_back(a[it]);}
         for(int it=0;it<br.size();it++){nextResult1.push_back(br[it]);}
         for(int it=0;it<cr.size();it++){nextResult1.push_back(cr[it]);}
+        
         if(find(result.begin(),result.end(),nextResult1) == result.end()
            && CalculatePathLength(curResult)>CalculatePathLength(nextResult1)){
           result.push_back(nextResult1);
@@ -732,6 +735,7 @@ void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
         for(int it=0;it<a.size();it++){nextResult2.push_back(a[it]);}
         for(int it=0;it<c.size();it++){nextResult2.push_back(c[it]);}
         for(int it=0;it<b.size();it++){nextResult2.push_back(b[it]);}
+        
         if(find(result.begin(),result.end(),nextResult2) == result.end()
           && CalculatePathLength(curResult)>CalculatePathLength(nextResult2)){
           result.push_back(nextResult2);
@@ -743,6 +747,7 @@ void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
         for(int it=0;it<a.size();it++){ nextResult3.push_back(a[it]); }
         for(int it=0;it<cr.size();it++){ nextResult3.push_back(cr[it]); }
         for(int it=0;it<b.size();it++){ nextResult3.push_back(b[it]); }
+        
         if(find(result.begin(),result.end(),nextResult3) == result.end()
            && CalculatePathLength(curResult)>CalculatePathLength(nextResult3)){
           result.push_back(nextResult3);
@@ -753,21 +758,22 @@ void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
         for(int it=0;it<a.size();it++){ nextResult4.push_back(a[it]); }
         for(int it=0;it<c.size();it++){ nextResult4.push_back(c[it]); }
         for(int it=0;it<br.size();it++){ nextResult4.push_back(br[it]); }
+        
         if(find(result.begin(),result.end(),nextResult4) == result.end()
            && CalculatePathLength(curResult)>CalculatePathLength(nextResult4)){
           result.push_back(nextResult4);
           TSPhelper3(result,nextResult4,CalculatePathLength(curResult));
         }
 
-        // other opt swap
+        // other opt swap which is the same as 2-opt 
         nextResult5 = curResult;
         std::reverse(nextResult5.begin()+i,nextResult5.begin()+j+1);
-        
         if(find(result.begin(),result.end(),nextResult5) == result.end()
            && CalculatePathLength(curResult)>CalculatePathLength(nextResult5)){
           result.push_back(nextResult5);
           TSPhelper3(result,nextResult5,CalculatePathLength(curResult));
         }
+
       }
     }
   }

@@ -272,6 +272,7 @@ TEST(TrojanMapTest, TSP3_3opt) {
   std::vector<std::string> gt{"123120189", "1931345270", "4011837224", "4011837229", "2514542032", "2514541020", "6807909279", "63068532", "214470792", "4015477529", "123120189"};
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   std::cout << "size of path: " << result.second.size() << std::endl;
+  //EXPECT_EQ(result.second[result.second.size()-1], gt);
   bool flag = false;
   if (gt == result.second[result.second.size()-1]) // clockwise
     flag = true;
