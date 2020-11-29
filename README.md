@@ -314,7 +314,7 @@ Your README file should include two sections:
 
 ## Final report:
 
-## Bastic Functions of The TrojanMap
+## Basic Functions of The TrojanMap
 
 This project is aimed to building a mapping application by using data structures and graph search algorithms. This project has four main functions related to this field:
 
@@ -327,7 +327,7 @@ This project is aimed to building a mapping application by using data structures
 4. Traveling salesman problem: urandomly select a number of locations and give you the shortest path to reach these locations and return to the start location
 
 ## Small modification in the PrintMenu() function
-Because I have apply three methods at the TSP function, so I make a small change at the **PrintMenu()** function to let people be able to select a method to do the TSP function. After inputing the number of points, the programming will print following menu:
+Because I have applied three methods at the TSP function, so I make a small change at the **PrintMenu()** function to let people be able to select a method to do the TSP function. After inputting the number of points, the programming will print following menu:
 
 ```shell
 **************************************************************
@@ -354,7 +354,7 @@ std::string GetName(std::string id);
 std::vector<std::string> GetNeighborIDs(std::string id);
 ```
 
-For these function, I use the private variable, data, in this project. It is a map variable whose key is the id of locations and value is the node to the id. Thus, I can use this private variable to find the node by the inputted id and return the related parameter of this node.
+For these functions, I use the private variable, data, in this project. It is a map variable whose key is the id of locations and value is the node to the id. Thus, I can use this private variable to find the node by the inputted id and return the related parameter of this node.
 
 ### 2. Helper functions to calculate the distance between locations and the length of a path
 Because of the last two main functions for the menu item, it is necessary to have two functions which can calculate the distance for different situations as following:
@@ -379,7 +379,7 @@ The first main function for the menu in this project is to search a place by a u
 std::vector<std::string> Autocomplete(std::string name);
 ```
 
-In this function, I use the function **equal()** from STL to find name in the map which match the requirement in a loop. If it doen't exist the required name, it will return an empty result. Here is the code diagram of this function:
+In this function, I use the function **equal()** from STL to find name in the map which match the requirement in a loop. If it doesn't exist the required name, it will return an empty result. Here is the code diagram of this function:
 
 <p align="center"><img src="Myimg/1-1.png" alt="AutocompleteCodeDiagram" width="500"/></p>
 
@@ -444,25 +444,25 @@ Here is a single process of the process of update the d map. if we start from no
 
 <p align="center"><img src="Myimg/3-8.png" alt="SingleUpdateD" width="500"/></p>
 
-Here is some results of this function. Because it is also a case-sensitive function, you will get following result if you still using "target" as one of the inputs:
+Here are some results of this function. Because it is also a case-sensitive function, you will get following result if you still using "target" as one of the inputs:
 
 <p align="center"><img src="Myimg/3-5.png" alt="CalculateShortestPathResult1" width="500"/></p>
 
-Because the list of path may be a bit harder to see in the programming, I use the plot of the path as the result. Here is the plot of the shortest path between Target and CVS:
+Because the list of paths may be a bit harder to see in the programming, I use the plot of the path as the result. Here is the plot of the shortest path between Target and CVS:
 
 <p align="center"><img src="Myimg/3-2.png" alt="CalculateShortestPathResult2" width="500"/></p>
 
-and we compare it with the recommand route on the Google map:
+and we compare it with the recommend route on the Google map:
 
 <p align="center"><img src="Myimg/3-4.png" alt="CalculateShortestPathResult2Google" width="500"/></p>
 
-We can see that they have similiar result.
+We can see that they have similar result.
 
 Here is the plot of the shortest path between Ralphs and CVS:
 
 <p align="center"><img src="Myimg/3-6.png" alt="CalculateShortestPathResult3" width="500"/></p>
 
-and we compare it with the recommand routes on the Google map:
+and we compare it with the recommend routes on the Google map:
 
 <p align="center"><img src="Myimg/3-7.png" alt="CalculateShortestPathResult3Google" width="500"/></p>
 
@@ -470,7 +470,7 @@ In this case, our result is a bit different from the Google map. I think that on
 
 ### 6. Traveling Trojan based on TSP
 
-Here is the header of this funciton:
+Here is the header of this function:
 
 ```c++
 std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan(
@@ -483,14 +483,16 @@ std::pair<double, std::vector<std::vector<std::string>>> TravellingTrojan_3opt(
       std::vector<std::string> &location_ids);
 ```
 
-This function will randomly select locations based on your input and find the sbortest route which can let you reach these locations and return to the start location. Here is the code diagram of this function:
+This function will randomly select locations based on your input and find the shortest route which can let you reach these locations and return to the start location. Here is the code diagram of this function:
 
 <p align="center"><img src="Myimg/4-1.png" alt="TravellingTrojanCodeDiagram" width="500"/></p>
 
 
 According to this diagram, we can see that the main idea of this function is to generate new route and find if it has a shorter length. I also use three different algorithms in this part.
 
-The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. I created a recursive helper function to generate all possible routes as the Brute Force Method. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimation in my code, I use a If statement to let it abandon those routes which has longer distance than the inputted route. It gives the function a significant optimization to this function. In the test case 3 of the TSP function, the average runtime of a non-optimized Brute Force Method is nearly 25000ms, and the average runtime of an optimized Brute Method is nearly 15000ms. It efficiently improves the time complexity of the original function by making it much lower than O(n!).
+####(1). Brute Force Method
+
+The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. I created a recursive helper function to generate all possible routes as the Brute Force Method. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimization in my code, I use an If statement to let it abandon those routes which has longer distance than the inputted route. It gives the function a significant optimization to this function. In the test case 3 of the TSP function, the average runtime of a non-optimized Brute Force Method is nearly 25000ms, and the average runtime of an optimized Brute Method is nearly 15000ms. It efficiently improves the time complexity of the original function by making it much lower than O(n!).
 
 Here is one result of the TSP function based on Brute Force Method:
 
@@ -498,7 +500,7 @@ The list of selected points:
 
 <p align="center"><img src="Myimg/4-2.png" alt="TravellingTrojanR1list" width="500"/></p>
 
-The amimated plot:
+The animated plot:
 
 <p align="center"><img src="Myimg/4-11.gif" alt="TravellingTrojanR1gif" width="500"/></p>
 
@@ -506,6 +508,7 @@ The final TSP route:
 
 <p align="center"><img src="Myimg/4-12.jpg" alt="TravellingTrojanR1" width="500"/></p>
 
+####(2). 2-opt
 
 I also apply the 2-opt method to solve the TSP. The main idea of 2-opt is to delete two edges from original route and reconnect them to generate a new route. Here is an example of a single process of 2-opt method. 
 
@@ -523,7 +526,7 @@ The list of selected points:
 
 <p align="center"><img src="Myimg/4-3.png" alt="TravellingTrojanR2list" width="500"/></p>
 
-The amimated plot:
+The animated plot:
 
 <p align="center"><img src="Myimg/4-13.gif" alt="TravellingTrojanR2gif" width="500"/></p>
 
@@ -532,11 +535,13 @@ The final TSP route:
 <p align="center"><img src="Myimg/4-14.jpg" alt="TravellingTrojanR2result" width="500"/></p>
 
 
+#### 3-opt algorithm
+
 3-opt method is similiar with 2-opt method, it deletes three edges from original route and reconnect them in 7 different styles. Here is an example of a single process of 3-opt method. 
 
 <p align="center"><img src="Myimg/4-7.png" alt="TravellingTrojan3-opt1" width="500"/></p>
 
-We use the same original route as the 2-opt case, and we delete the three edges, 1->2, 3->4, and 5->0. We will get three different subroutes, 0->1, 2->3 and 4->5. To make it more clear, we suppose that they are A, B and C.
+We use the same original route as the 2-opt case, and we delete the three edges, 1->2, 3->4, and 5->0. We will get three different sub routes, 0->1, 2->3 and 4->5. To make it clearer, we suppose that they are A, B and C.
 
 Here is the first style to reconnect:
 
@@ -552,7 +557,7 @@ The third style is following, it is [A->,C<-,B->]:
 
 <p align="center"><img src="Myimg/4-10.png" alt="TravellingTrojan3-opt4" width="500"/></p>
 
-The fourth style is following, and it is [A->,C->,B<-];
+The fourth style is following, and it is [A->,C->,B<-]:
 
 <p align="center"><img src="Myimg/4-17.png" alt="TravellingTrojan3-opt4" width="500"/></p>
 
@@ -562,7 +567,7 @@ Here is the result of the TSP function based on 3-opt Method:
 
 <p align="center"><img src="Myimg/4-4.png" alt="TravellingTrojanR3list" width="500"/></p>
 
-The amimated plot:
+The animated plot:
 
 <p align="center"><img src="Myimg/4-15.gif" alt="TravellingTrojanR3gif" width="500"/></p>
 
@@ -586,15 +591,15 @@ I also constructed a test file to test the behavior of the four main functions f
 
 **TravellingTrojan_3opt() :** 71ms(case 1), 109ms(case 2), 26901ms(case 3)
 
-For the first two functions, it has short runtime because both of them have a low time complexity(O(n)). The other two functions have some insteresting problem which I would like to spend time to analyze.
+For the first two functions, it has short runtime because both of them have a low time complexity(O(n)). The other two functions have some interesting problem which I would like to spend time to analyze.
 
-The first problem is the extraordinary long run time in the function **CalculateShortestPath():**, both these two test case has nearly 200s run time. I has two hypotheses in this part. The first hypothesis is the limitation of my hardware. I run and test this project on the Ubuntu system which is in a virtual machine. When I set this system, I haven't given this virtual machine a high parameter because I don't want to make it affect other software's behavior on my computer. Thus I has this hypothesis that the limitation of my coding environment may cause the long run time.
+The first problem is the extraordinary long run time in the function **CalculateShortestPath()**, both these two test cases have nearly 200s run time. I have two hypotheses in this part. The first hypothesis is the limitation of my hardware. I run and test this project on the Ubuntu system which is in a virtual machine. When I set this system, I haven't given this virtual machine a high parameter because I don't want to make it affect other software's behavior on my computer. Thus, I have this hypothesis that the limitation of my coding environment may cause the long run time.
 
-My second hypothesis is the time complexity of the Bellman-Ford algorithm. In my function, I use three loop to iteratively update the d map and path map. In principle, the first loop will run n times, and the other two loop are only checking incomg edges, which makes the time complexity is O(n * (Sum(all incoming edges))) = O(n * m). However, I think that my function may have some unnecessary part that makes the 2nd or 3nd loop run the whole n times. It makes the real time complexity become O(n^2 * m) or even O(n^3) and extraordinary increasing the run time of this function.
+My second hypothesis is the time complexity of the Bellman-Ford algorithm. In my function, I use three loops to iteratively update the d map and path map. In principle, the first loop will run n times, and the other two loops are only checking incoming edges, which makes the time complexity is O(n * (Sum(all incoming edges))) = O(n * m). However, I think that my function may have some unnecessary part that makes the 2nd or 3rd loop run the whole n times. It makes the real time complexity become O(n^2 * m) or even O(n^3) and extraordinary increasing the run time of this function.
 
-The other problem I am focus on is the long run time of **TravellingTrojan_3opt() :** function in a big number of input points. Although I know the runtime of 3-opt method is O(n^3), which will be a bit longer than 2-opt method, it is abnormal that real run time of 3-opt method is longer than Brute Force method whose time complexity is O(n!). My hypothesis in this problem is that I may create too much branch in the 3-opt method. I use a recursive helper function to generate new routes and find the solution. Because 3-opt method has 7 different reconnecting methods, I creat branch for different methods. Although I have combine 3 of them which can be think as 2-opt swap, there are still 5 branch in a single recursive function. I think that it will severely increasing the runtime of the function.
+The other problem I am focus on is the long run time of **TravellingTrojan_3opt() :** function in a big number of input points. Although I know the runtime of 3-opt method is O(n^3), which will be a bit longer than 2-opt method, it is abnormal that real run time of 3-opt method is longer than Brute Force method whose time complexity is O(n!). My hypothesis in this problem is that I may create too much branch in the 3-opt method. I use a recursive helper function to generate new routes and find the solution. Because 3-opt method has 7 different reconnecting methods, I create branch for different methods. Although I have combined 3 of them which can be think as 2-opt swap, there are still 5 branches in a single recursive function. I think that it will severely increasing the runtime of the function.
 
-Above all, I think that I have learnt a lot from this project such as how to using c++ to program in
+Above all, I think that I have learnt a lot from this project such as how to use c++ to program in
 a practical field, how to use different algorithms to solve problems. In addition, I also have some future plan related to programming field. For example, one of my main problems in this project is the extraordinary long run time in some function. It is necessary for me to know the complexity in a higher level and know how to optimize the time complexity of a programme.
 
 ## Modified final video
