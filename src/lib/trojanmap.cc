@@ -564,7 +564,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath(
 
 
 /**
- * Travelling salesman problem: Given a list of locations, return the shortest
+ * Travelling salesman problem based on Brute Force method: Given a list of locations, return the shortest
  * path which visit all the places and back to the start point.
  *
  * @param  {std::vector<std::string>} input : a list of locations needs to visit
@@ -600,9 +600,11 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
   return results;
 } 
 
+// use Brute Force method to generate all possible route
 void TrojanMap::TSPhelper1(std::vector<std::string> &location_ids, 
                           std::vector<std::vector<std::string>> &result,
                           std::vector<std::string> curResult){
+  // only store routes which is shorter than the location_ids
   if(curResult.size() == location_ids.size() && CalculatePathLength(curResult) < CalculatePathLength(location_ids)){
     result.push_back(curResult);
     return;
@@ -648,6 +650,7 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
   return results;                            
 }
 
+// use 2-opt method to generate new route
 void TrojanMap::TSPhelper2(std::vector<std::vector<std::string>> &result,
                           std::vector<std::string> curResult,
                           double minD){
@@ -672,7 +675,13 @@ void TrojanMap::TSPhelper2(std::vector<std::vector<std::string>> &result,
   }
 }
 
-
+/**
+ * Travelling salesman problem based on 3-opt method: Given a list of locations, return the shortest
+ * path which visit all the places and back to the start point.
+ *
+ * @param  {std::vector<std::string>} input : a list of locations needs to visit
+ * @return {std::pair<double, std::vector<std::vector<std::string>>} : a pair of total distance and the all the progress to get final path
+ */
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTrojan_3opt(
                                     std::vector<std::string> &location_ids) {
   std::pair<double, std::vector<std::vector<std::string>>> results;
@@ -696,6 +705,7 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
   return results;                            
 }
 
+// use 3-opt method to generate new route
 void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
                           std::vector<std::string> curResult,
                           double minD){
@@ -709,10 +719,10 @@ void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
     std::vector<std::string> nextResult3;
     std::vector<std::string> nextResult4;
     std::vector<std::string> nextResult5;
-    std::vector<std::string> nextResult6;
-    std::vector<std::string> nextResult7;
-    std::vector<std::vector<std::string>> nextResults;
-    std::vector<std::string> bestNextResult;
+    //std::vector<std::string> nextResult6;
+    //std::vector<std::string> nextResult7;
+    //std::vector<std::vector<std::string>> nextResults;
+    //std::vector<std::string> bestNextResult;
     for(int i=1;i<curResult.size()-1;i++){
       for(int j=i+1;j<curResult.size();j++){
         std::vector<std::string> a;
@@ -778,7 +788,6 @@ void TrojanMap::TSPhelper3(std::vector<std::vector<std::string>> &result,
           result.push_back(nextResult5);
           TSPhelper3(result,nextResult5,CalculatePathLength(curResult));
         }
-
       }
     }
   }

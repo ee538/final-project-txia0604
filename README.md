@@ -490,7 +490,7 @@ This function will randomly select locations based on your input and find the sh
 
 According to this diagram, we can see that the main idea of this function is to generate new route and find if it has a shorter length. I also use three different algorithms in this part.
 
-####(1). Brute Force Method
+**(1). Brute Force Method**
 
 The first algorithm is Brute Force Method, it will generate all possible routes based on the inputted list, and then it will find the one whose length is shortest. I created a recursive helper function to generate all possible routes as the Brute Force Method. The time complexity of this method is O(n!) which is a bad run time in the computer science field. Thus, I apply a little optimization in my code, I use an If statement to let it abandon those routes which has longer distance than the inputted route. It gives the function a significant optimization to this function. In the test case 3 of the TSP function, the average runtime of a non-optimized Brute Force Method is nearly 25000ms, and the average runtime of an optimized Brute Method is nearly 15000ms. It efficiently improves the time complexity of the original function by making it much lower than O(n!).
 
@@ -508,7 +508,7 @@ The final TSP route:
 
 <p align="center"><img src="Myimg/4-12.jpg" alt="TravellingTrojanR1" width="500"/></p>
 
-####(2). 2-opt
+**(2). 2-opt method**
 
 I also apply the 2-opt method to solve the TSP. The main idea of 2-opt is to delete two edges from original route and reconnect them to generate a new route. Here is an example of a single process of 2-opt method. 
 
@@ -535,7 +535,7 @@ The final TSP route:
 <p align="center"><img src="Myimg/4-14.jpg" alt="TravellingTrojanR2result" width="500"/></p>
 
 
-#### 3-opt algorithm
+**(3). 3-opt method**
 
 3-opt method is similiar with 2-opt method, it deletes three edges from original route and reconnect them in 7 different styles. Here is an example of a single process of 3-opt method. 
 
