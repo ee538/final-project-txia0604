@@ -646,7 +646,6 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
   results.first = minD;
   results.second[results.second.size()-1].swap(results.second[minIndex]);
 
-
   return results;                            
 }
 
@@ -700,7 +699,6 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravellingTr
   }
   results.first = minD;
   results.second[results.second.size()-1].swap(results.second[minIndex]);
-
 
   return results;                            
 }

@@ -1,6 +1,6 @@
 # EE599 Final Project - TrojanMap
 
-## TrojanMap
+## TrojanMap (Final report is after the given section)
 
 > This project focuses on using data structures and graph search algorithms to build a mapping application.
 <p align="center"><img src="img/TrojanMap.png" alt="Trojan" width="500" /></p>
