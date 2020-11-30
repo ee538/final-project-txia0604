@@ -537,6 +537,7 @@ std::vector<std::string> TrojanMap::CalculateShortestPath(
       goal = it.second.id;
     }
   }
+
   // iteratively update the new distance map and path map
   // 1st loop: run for n times(n is the size of data)
   for (int i=0; i < data.size()-1; i++){
@@ -546,13 +547,15 @@ std::vector<std::string> TrojanMap::CalculateShortestPath(
       // 3rd loop: visit all neighbors of current location
       for (auto neighbor_id : it.second.neighbors){
         double current_dist = CalculateDistance(data[current_id], data[neighbor_id]);
-        if (current_dist + d[current_id] < d[neighbor_id]){
+        if (d[neighbor_id] > current_dist + d[current_id]){
           //update d map
           d[neighbor_id] = current_dist + d[current_id];
+
           //update path map
           std::vector<std::string> new_path = path[current_id];
           new_path.push_back(neighbor_id);
           path[neighbor_id] = new_path;
+          
         }
       }
     }
@@ -615,6 +618,7 @@ void TrojanMap::TSPhelper1(std::vector<std::string> &location_ids,
     }
     std::vector<std::string> nextResult = curResult;
     nextResult.push_back(location_ids[i]);
+    // filter longer routes to reduce the time complexity
     if(CalculatePathLength(nextResult) < CalculatePathLength(location_ids)){
       TSPhelper1(location_ids,result,nextResult);
     }
